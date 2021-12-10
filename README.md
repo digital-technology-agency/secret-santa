@@ -1,2 +1,2 @@
-# secret-santa
+# Тайный санта ))
 Secret santa bot
