@@ -35,3 +35,20 @@ func (data *Data) Add(key, value []byte) error {
 func (data *Data) Get(key []byte) ([]byte, error) {
 	return data.db.Get(key)
 }
+
+//GetAll get all values
+func (data *Data) GetAll() (map[string][]byte, error) {
+	result := map[string][]byte{}
+	err := data.db.Fold(func(key []byte) error {
+		get, err := data.db.Get(key)
+		if err != nil {
+			return err
+		}
+		result[fmt.Sprintf("%s", key)] = get
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
