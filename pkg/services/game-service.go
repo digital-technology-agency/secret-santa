@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/digital-technology-agency/secret-santa/pkg/data/bitcask"
 	"github.com/digital-technology-agency/secret-santa/pkg/models"
+	"math/rand"
 )
 
 type Game struct {
@@ -56,25 +57,59 @@ func (game *Game) Algorithm() error {
 	if err != nil {
 		return err
 	}
-	players := []models.Player{}
+	players := []*models.Player{}
+	friends := []*models.Player{}
 	for _, bytes := range allData {
 		var playerData models.Player
 		err = json.Unmarshal(bytes, &playerData)
 		if err != nil {
 			return err
 		}
-		players = append(players, playerData)
+		players = append(players, &playerData)
+		friends = append(friends, &playerData)
 	}
 	markerData := map[string]*models.Player{}
-	for _, player := range players {
-		if markerData[player.Id] != nil {
+	for len(players) != 0 && len(friends) != 0 {
+		playersLen := len(players)
+		friendsLen := len(friends)
+		indexPlayer := rand.Intn(playersLen)
+		indexFriend := rand.Intn(friendsLen)
+		selectPlayer := players[indexPlayer]
+		selectFriend := friends[indexFriend]
+		if selectPlayer.Id == selectFriend.Id {
 			continue
 		}
-		markerData[player.Id] = &models.Player{
-			Id:       player.Id,
-			Login:    player.Login,
-			FriendId: player.FriendId,
+		if markerData[selectPlayer.Id] != nil {
+			players = append(players[:indexPlayer], players[indexPlayer+1:]...)
+			continue
+		}
+		if markerData[selectFriend.Id] != nil {
+			friends = append(friends[:indexFriend], friends[indexFriend+1:]...)
+			continue
+		}
+		markerData[selectPlayer.Id] = &models.Player{
+			Id:       selectPlayer.Id,
+			Login:    selectPlayer.Login,
+			FriendId: selectFriend.Id,
+		}
+		markerData[selectFriend.Id] = &models.Player{
+			Id:       selectFriend.Id,
+			Login:    selectFriend.Login,
+			FriendId: selectPlayer.Id,
+		}
+		friends = append(friends[:indexFriend], friends[indexFriend+1:]...)
+		players = append(players[:indexPlayer], players[indexPlayer+1:]...)
+	}
+	for _, updatePlayer := range markerData {
+		err := game.AddPlayer(*updatePlayer)
+		if err != nil {
+			return err
 		}
 	}
+	defer func() {
+		markerData = nil
+		players = nil
+		friends = nil
+	}()
 	return nil
 }
