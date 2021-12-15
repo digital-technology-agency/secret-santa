@@ -1,1 +1,1 @@
-web: dist/bot_amd64
+web: dist/bot
