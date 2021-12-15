@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"github.com/digital-technology-agency/secret-santa/pkg/data/bitcask"
 	"github.com/digital-technology-agency/secret-santa/pkg/models"
-	"math/rand"
-	"time"
 )
 
 type Game struct {
@@ -67,9 +65,6 @@ func (game *Game) Algorithm() error {
 		}
 		players = append(players, playerData)
 	}
-	/*algorithm*/
-	playersCount := len(players)
-	rand.Seed(time.Now().UnixNano())
 	markerData := map[string]*models.Player{}
 	for _, player := range players {
 		if markerData[player.Id] != nil {
@@ -79,17 +74,6 @@ func (game *Game) Algorithm() error {
 			Id:       player.Id,
 			Login:    player.Login,
 			FriendId: player.FriendId,
-		}
-		for {
-			selectPlayer := players[rand.Intn(playersCount)]
-			if selectPlayer.Id == player.Id {
-				continue
-			}
-			if markerData[player.Id].FriendId != "" {
-				continue
-			}
-			markerData[player.Id].FriendId = selectPlayer.Id
-			break
 		}
 	}
 	return nil

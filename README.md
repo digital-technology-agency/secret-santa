@@ -4,8 +4,12 @@ Secret santa bot
 
 ### 1. Базовая конфигурация проекта
 
-[![Golang | Live code | Проекты с открытым исходным кодом | Базовая конфигурация проекта](https://img.youtube.com/vi/isozbwYEByE/0.jpg)](https://youtu.be/isozbwYEByE "Базовая конфигурация проекта")
+[![Golang | Live code | Тайный санта | Проекты с открытым исходным кодом | Базовая конфигурация проекта](https://img.youtube.com/vi/isozbwYEByE/0.jpg)](https://youtu.be/isozbwYEByE "Базовая конфигурация проекта")
 
 ### 2. Создание кеша и обработка входных данных
 
-[![Golang | Live code | Проекты с открытым исходным кодом | Создание кеша и обработка входных данных](https://img.youtube.com/vi/isozbwYEByE/0.jpg)](https://youtu.be/SneBpp-ctgo "Создание кеша и обработка входных данных")
+[![Golang | Live code | Тайный санта | Проекты с открытым исходным кодом | Создание кеша и обработка входных данных](https://img.youtube.com/vi/isozbwYEByE/0.jpg)](https://youtu.be/SneBpp-ctgo "Создание кеша и обработка входных данных")
+
+### 3. Алгоритм выбора участников и сохранение данных в кеш
+
+[![Golang | Live code | Тайный санта | Проекты с открытым исходным кодом | Алгоритм выбора участников и сохранение данных в кеш](https://img.youtube.com/vi/3QR29sNchFI/0.jpg)](https://youtu.be/3QR29sNchFI "Алгоритм выбора участников и сохранение данных в кеш")
