@@ -2,7 +2,7 @@ package bitcask
 
 import (
 	"fmt"
-	"github.com/prologic/bitcask"
+	"git.mills.io/prologic/bitcask"
 	"os"
 )
 
