@@ -3,6 +3,7 @@ package main
 import (
 	tgbot "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
+	"os"
 )
 
 var numericKeyboard = tgbot.NewReplyKeyboard(
@@ -12,7 +13,7 @@ var numericKeyboard = tgbot.NewReplyKeyboard(
 )
 
 func main() {
-	bot, err := tgbot.NewBotAPI("")
+	bot, err := tgbot.NewBotAPI(os.Getenv("TG_BOT_TOKEN"))
 	if err != nil {
 		log.Panic(err)
 	}
