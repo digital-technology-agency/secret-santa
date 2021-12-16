@@ -50,6 +50,30 @@ func (game *Game) AddPlayer(player models.Player) error {
 	return game.data.Add(key, value)
 }
 
+//RemovePlayerById remove player by id
+func (game *Game) RemovePlayerById(playerId string) error {
+	key := []byte(playerId)
+	return game.data.Remove(key)
+}
+
+//GetAllPlayers get all players
+func (game *Game) GetAllPlayers() ([]models.Player, error) {
+	result := []models.Player{}
+	allData, err := game.data.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	for _, bytes := range allData {
+		var playerData models.Player
+		err = json.Unmarshal(bytes, &playerData)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, playerData)
+	}
+	return result, nil
+}
+
 //Algorithm random
 func (game *Game) Algorithm() error {
 	/*init data*/

@@ -1,7 +1,7 @@
 package bitcask
 
 import (
-	"github.com/prologic/bitcask"
+	"git.mills.io/prologic/bitcask"
 	"reflect"
 	"testing"
 )
@@ -176,6 +176,52 @@ func TestData_GetAll(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetAll() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestData_Remove(t *testing.T) {
+	testKey := []byte("1")
+	testValue := []byte("значение")
+	dataC, err := Connect(testDbName)
+	if err != nil {
+		t.Errorf("Connect() error = %v", err)
+	}
+	err = dataC.Add(testKey, testValue)
+	if err != nil {
+		t.Errorf("Connect() error = %v", err)
+	}
+	type fields struct {
+		db *bitcask.Bitcask
+	}
+	type args struct {
+		key []byte
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "remove key",
+			fields: fields{
+				db: dataC.db,
+			},
+			args: args{
+				key: testKey,
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			data := &Data{
+				db: tt.fields.db,
+			}
+			if err := data.Remove(tt.args.key); (err != nil) != tt.wantErr {
+				t.Errorf("Remove() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
