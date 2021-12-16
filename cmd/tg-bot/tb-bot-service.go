@@ -30,10 +30,13 @@ func main() {
 	updatesChan := bot.GetUpdatesChan(update)
 	for update := range updatesChan {
 		if update.Message != nil {
-			msg := tgbot.NewMessage(update.Message.Chat.ID, update.Message.Text)
-			msg.ReplyMarkup = keyboard
-			if _, err := bot.Send(msg); err != nil {
-				log.Panic(err)
+			msgText := update.Message.Text
+			if services.InitGameRegex.MatchString(msgText) {
+				msg := tgbot.NewMessage(update.Message.Chat.ID, "Вы может принять участие в игре")
+				msg.ReplyMarkup = keyboard
+				if _, err := bot.Send(msg); err != nil {
+					log.Panic(err)
+				}
 			}
 		} else if update.CallbackQuery != nil {
 			var msgConfig tgbot.MessageConfig
