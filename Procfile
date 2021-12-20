@@ -1,1 +1,1 @@
-web: dist/bot-linux-amd64
+web: go run cmd/tg-bot/tb-bot-service.go
