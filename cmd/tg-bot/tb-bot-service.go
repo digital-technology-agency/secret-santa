@@ -32,6 +32,7 @@ func initRoom(id string) *services.Game {
 	return rooms[id]
 }
 
+// main
 func main() {
 	bot, err := tgbot.NewBotAPI(os.Getenv("TG_BOT_TOKEN"))
 	if err != nil {
