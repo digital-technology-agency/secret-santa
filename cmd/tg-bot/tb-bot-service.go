@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	address  = ":8080"
+	address  = ":80"
 	rooms    = map[string]*services.Game{}
 	keyboard = tgbot.NewInlineKeyboardMarkup(
 		tgbot.NewInlineKeyboardRow(
