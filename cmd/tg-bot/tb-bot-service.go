@@ -3,15 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/digital-technology-agency/secret-santa/pkg/models"
-	"github.com/digital-technology-agency/secret-santa/pkg/routes"
 	"github.com/digital-technology-agency/secret-santa/pkg/services"
 	"github.com/digital-technology-agency/secret-santa/pkg/utils"
-	"github.com/fasthttp/router"
 	tgbot "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/valyala/fasthttp"
 	"log"
 	"os"
-	"time"
 )
 
 var (
@@ -40,21 +36,21 @@ func initRoom(id string) *services.Game {
 
 // main
 func main() {
-	rt := router.New()
-	rt.GET("/", routes.GetHealth)
-	webServer := fasthttp.Server{
-		Name:         "Santa bot",
-		WriteTimeout: time.Second * 5,
-		ReadTimeout:  time.Second * 5,
-		IdleTimeout:  time.Second * 5,
-		Handler:      rt.Handler,
-	}
-	go func() {
-		fmt.Print("GET... [http://localhost", address, "/", "]\n")
-		if err := webServer.ListenAndServe(fmt.Sprintf(":%s", address)); err != nil {
-			log.Panic(err)
+	/*	rt := router.New()
+		rt.GET("/", routes.GetHealth)
+		webServer := fasthttp.Server{
+			Name:         "Santa bot",
+			WriteTimeout: time.Second * 5,
+			ReadTimeout:  time.Second * 5,
+			IdleTimeout:  time.Second * 5,
+			Handler:      rt.Handler,
 		}
-	}()
+		go func() {
+			fmt.Print("GET... [http://localhost", address, "/", "]\n")
+			if err := webServer.ListenAndServe(fmt.Sprintf(":%s", address)); err != nil {
+				log.Panic(err)
+			}
+		}()*/
 	bot, err := tgbot.NewBotAPI(os.Getenv("TG_BOT_TOKEN"))
 	if err != nil {
 		log.Panic(err)
