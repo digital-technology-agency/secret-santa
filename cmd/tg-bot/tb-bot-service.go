@@ -55,9 +55,9 @@ func main() {
 			var msgConfig tgbot.MessageConfig
 			cmd := update.CallbackQuery.Data
 			chatId := fmt.Sprintf("%d", update.CallbackQuery.Message.Chat.ID)
-			userId := update.CallbackQuery.Message.Chat.UserName
-			lastName := update.CallbackQuery.Message.Chat.FirstName
-			msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - подключение к источнику данных!", lastName))
+			userId := fmt.Sprintf("%d", update.CallbackQuery.From.ID)
+			lastName := update.CallbackQuery.From.FirstName
+			msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - функция находиться в разработке!", lastName))
 			game := initRoom(chatId)
 			switch cmd {
 			default:
@@ -80,6 +80,7 @@ func main() {
 				})
 				msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - присоединился к игре!", lastName))
 			case services.CmdExitGame:
+				game.RemovePlayerById(userId)
 				msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - вышел из игры!", lastName))
 			case services.CmdLanguageGame:
 				msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - изменил язык игры!", lastName))
