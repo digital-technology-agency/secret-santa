@@ -5,6 +5,7 @@ import (
 	"github.com/digital-technology-agency/secret-santa/pkg/models"
 	"github.com/digital-technology-agency/secret-santa/pkg/routes"
 	"github.com/digital-technology-agency/secret-santa/pkg/services"
+	"github.com/digital-technology-agency/secret-santa/pkg/utils"
 	"github.com/fasthttp/router"
 	tgbot "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/valyala/fasthttp"
@@ -14,7 +15,7 @@ import (
 )
 
 var (
-	address  = ":80"
+	address  = utils.GetEnv("PORT", "8080")
 	rooms    = map[string]*services.Game{}
 	keyboard = tgbot.NewInlineKeyboardMarkup(
 		tgbot.NewInlineKeyboardRow(
@@ -50,7 +51,7 @@ func main() {
 	}
 	go func() {
 		fmt.Print("GET... [http://localhost", address, "/", "]\n")
-		if err := webServer.ListenAndServe(address); err != nil {
+		if err := webServer.ListenAndServe(fmt.Sprintf(":%s", address)); err != nil {
 			log.Panic(err)
 		}
 	}()
