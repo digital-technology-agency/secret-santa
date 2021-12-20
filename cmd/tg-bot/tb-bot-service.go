@@ -95,10 +95,7 @@ func main() {
 					msgConfig.ReplyMarkup = tgbot.NewInlineKeyboardMarkup(btns)
 				}
 			case services.CmdJoinGame:
-				player, err := game.GetPlayer(userId)
-				if err != nil {
-					log.Panic(err)
-				}
+				player, _ := game.GetPlayer(userId)
 				if player == nil {
 					err = game.AddPlayer(models.Player{
 						Id:       userId,
