@@ -1,1 +1,1 @@
-web: /bin/tg-bot
+web: tg-bot
