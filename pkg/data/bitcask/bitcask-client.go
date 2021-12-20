@@ -49,7 +49,7 @@ func (data *Data) GetAll() (map[string][]byte, error) {
 		if err != nil {
 			return err
 		}
-		result[fmt.Sprintf("%s", key)] = get
+		result[string(key)] = get
 		return nil
 	})
 	if err != nil {
