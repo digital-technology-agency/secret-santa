@@ -1,1 +1,1 @@
-web: dist/bot
+web: dist/bot-linux-amd64
