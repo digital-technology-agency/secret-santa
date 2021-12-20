@@ -95,14 +95,32 @@ func main() {
 					msgConfig.ReplyMarkup = tgbot.NewInlineKeyboardMarkup(btns)
 				}
 			case services.CmdJoinGame:
-				game.AddPlayer(models.Player{
-					Id:       userId,
-					Login:    lastName,
-					FriendId: "",
-				})
-				msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - присоединился к игре!", lastName))
+				player, err := game.GetPlayer(userId)
+				if err != nil {
+					log.Panic(err)
+				}
+				if player == nil {
+					err = game.AddPlayer(models.Player{
+						Id:       userId,
+						Login:    lastName,
+						FriendId: "",
+					})
+					if err != nil {
+						log.Panic(err)
+					}
+					err = game.Algorithm()
+					if err != nil {
+						log.Panic(err)
+					}
+					msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - присоединился к игре!", lastName))
+				} else {
+					msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - уже является участником игры!", lastName))
+				}
 			case services.CmdExitGame:
-				game.RemovePlayerById(userId)
+				err := game.RemovePlayerById(userId)
+				if err != nil {
+					log.Panic(err)
+				}
 				msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - вышел из игры!", lastName))
 			case services.CmdLanguageGame:
 				msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - изменил язык игры!", lastName))

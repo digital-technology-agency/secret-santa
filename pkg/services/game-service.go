@@ -40,6 +40,21 @@ func GetOrCreate(chatId string) (*Game, error) {
 	return gameResult, nil
 }
 
+//GetPlayer get player by id
+func (game *Game) GetPlayer(playerId string) (*models.Player, error) {
+	key := []byte(playerId)
+	get, err := game.data.Get(key)
+	if err != nil {
+		return nil, err
+	}
+	var player models.Player
+	err = json.Unmarshal(get, &player)
+	if err != nil {
+		return nil, err
+	}
+	return &player, nil
+}
+
 //AddPlayer add player to game
 func (game *Game) AddPlayer(player models.Player) error {
 	key := []byte(player.Id)
