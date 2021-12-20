@@ -16,4 +16,8 @@ Secret santa bot
 
 ### 4. [Интеграция бизнес логики в телеграм бот](https://youtu.be/g_m5kpXRYDU "Интеграция бизнес логики в телеграм бот")
 
-[![Golang | Live code | Тайный санта | Интеграция бизнес логики в телеграм бот | Алгоритм выбора участников и сохранение данных в кеш](https://img.youtube.com/vi/g_m5kpXRYDU/maxresdefault.jpg)](https://youtu.be/g_m5kpXRYDU "Интеграция бизнес логики в телеграм бот")
+[![Golang | Live code | Тайный санта | Интеграция бизнес логики в телеграм бот](https://img.youtube.com/vi/g_m5kpXRYDU/maxresdefault.jpg)](https://youtu.be/g_m5kpXRYDU "Интеграция бизнес логики в телеграм бот")
+
+### 5. [Публикация проекта на бесплатный хостинг Heroku](https://youtu.be/HX7lN7rNueA "Публикация проекта на бесплатный хостинг Heroku")
+
+[![Golang | Live code | Тайный санта | Публикация проекта на бесплатный хостинг Heroku](https://img.youtube.com/vi/g_m5kpXRYDU/maxresdefault.jpg)](https://youtu.be/HX7lN7rNueA "Публикация проекта на бесплатный хостинг Heroku")
