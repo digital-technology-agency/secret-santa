@@ -107,6 +107,9 @@ func (game *Game) Algorithm() error {
 		players = append(players, &playerData)
 		friends = append(friends, &playerData)
 	}
+	if len(players)%2 != 0 {
+		return nil
+	}
 	markerData := map[string]*models.Player{}
 	for len(players) != 0 && len(friends) != 0 {
 		playersLen := len(players)
