@@ -24,4 +24,4 @@ jobs:
           heroku_app_name: "dta-secret-santa"
           heroku_email: "admin@digital-technology.agency"
           healthcheck: "https://dta-secret-santa.herokuapp.com/health"
-          appdir: "dist/bot"
+          appdir: "dist/bot-linux-amd64"
