@@ -1,6 +1,7 @@
 module github.com/digital-technology-agency/secret-santa
 
-go 1.16
+// +heroku goVersion go1.17
+go 1.17
 
 require (
 	git.mills.io/prologic/bitcask v1.0.2
