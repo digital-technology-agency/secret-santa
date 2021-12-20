@@ -59,7 +59,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	bot.Debug = true
+	bot.Debug = false
 	update := tgbot.NewUpdate(0)
 	update.Timeout = 60
 	updatesChan := bot.GetUpdatesChan(update)
