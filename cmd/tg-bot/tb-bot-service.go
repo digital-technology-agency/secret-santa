@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/digital-technology-agency/secret-santa/pkg/models"
 	"github.com/digital-technology-agency/secret-santa/pkg/services"
 	tgbot "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
@@ -9,6 +10,7 @@ import (
 )
 
 var (
+	rooms    = map[string]*services.Game{}
 	keyboard = tgbot.NewInlineKeyboardMarkup(
 		tgbot.NewInlineKeyboardRow(
 			tgbot.NewInlineKeyboardButtonData("🎅🏻 Список участников", services.CmdLayerListGame),
@@ -18,6 +20,17 @@ var (
 		),
 	)
 )
+
+func initRoom(id string) *services.Game {
+	if rooms[id] == nil {
+		create, err := services.GetOrCreate(id)
+		if err != nil {
+			log.Panic(err)
+		}
+		rooms[id] = create
+	}
+	return rooms[id]
+}
 
 func main() {
 	bot, err := tgbot.NewBotAPI(os.Getenv("TG_BOT_TOKEN"))
@@ -41,13 +54,30 @@ func main() {
 		} else if update.CallbackQuery != nil {
 			var msgConfig tgbot.MessageConfig
 			cmd := update.CallbackQuery.Data
+			chatId := fmt.Sprintf("%d", update.CallbackQuery.Message.Chat.ID)
+			userId := update.CallbackQuery.Message.Chat.UserName
 			lastName := update.CallbackQuery.Message.Chat.FirstName
+			msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - подключение к источнику данных!", lastName))
+			game := initRoom(chatId)
 			switch cmd {
 			default:
-				log.Panicf("Cmd:[%s] - not found", cmd)
+				log.Println("Cmd:[%s] - not found", cmd)
 			case services.CmdLayerListGame:
 				msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - запросил список участников игры!", lastName))
+				players, _ := game.GetAllPlayers()
+				btns := tgbot.NewInlineKeyboardRow()
+				for _, player := range players {
+					btns = append(btns, tgbot.NewInlineKeyboardButtonData(fmt.Sprintf("🎅🏻 %s", player.Login), player.Login))
+				}
+				if len(players) > 0 {
+					msgConfig.ReplyMarkup = tgbot.NewInlineKeyboardMarkup(btns)
+				}
 			case services.CmdJoinGame:
+				game.AddPlayer(models.Player{
+					Id:       userId,
+					Login:    lastName,
+					FriendId: "",
+				})
 				msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - присоединился к игре!", lastName))
 			case services.CmdExitGame:
 				msgConfig = tgbot.NewMessage(update.CallbackQuery.Message.Chat.ID, fmt.Sprintf("Пользователь %s - вышел из игры!", lastName))
