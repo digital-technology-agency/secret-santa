@@ -1,1 +1,1 @@
-web: go run cmd/tg-bot/tb-bot-service.go
+web: /bin/tg-bot
